@@ -1,0 +1,138 @@
+================================================================================
+          STUDENT PROJECT PERFORMANCE ANALYTICS - FINAL REPORT
+================================================================================
+
+PROJECT OVERVIEW
+---------------
+System: Student Project Performance Analytics Dashboard
+Purpose: Track student contributions, analyze team dynamics, and generate 
+         fairness-based evaluation metrics for college administrators
+
+DATA SOURCES
+------------
+- Student Info (40 students, 8 teams)
+- Task Logs (tasks assigned/completed, hours)
+- Git Activity (commits, PRs, code changes)
+- Peer Reviews (ratings)
+- Attendance (meetings attended)
+- Progress (weekly progress tracking)
+
+METHODOLOGY
+------------
+Data Science Workflow Applied:
+1. Data Collection - Raw CSV files loaded
+2. Data Cleaning - Missing values handled, normalized metrics created
+3. EDA - Patterns and correlations analyzed
+4. Insight Generation - Contribution & team scores calculated
+5. Visualization Dashboard - Charts generated
+
+SCORING METHODOLOGY
+-------------------
+Contribution Score (0-100) weights:
+- Task Completion Rate: 25%
+- Git Activity (commits + PRs + code lines): 25%
+- Peer Reviews: 20%
+- Attendance: 15%
+- Week 4 Progress: 15%
+
+Team Performance Score metrics:
+- Average Progress: 40%
+- Completion Rate: 30%
+- Peer Rating: 30%
+
+ANALYSIS RESULTS
+================
+
+OVERVIEW
+-------
+Total Students: 40
+Total Teams: 8
+At-Risk Students: 14
+
+CONTRIBUTION SCORE DISTRIBUTION
+-----------------------------
+Good (>=60): 11 students (27.5%)
+Warning (40-59): 18 students (45.0%)
+At Risk (<40): 11 students (27.5%)
+
+TEAM PERFORMANCE SUMMARY
+------------------------
+Team    Performance    Balance    Strength
+----    -----------    -------    --------
+T07       82.8         0.0       Strong
+T04       72.1        79.4       Medium
+T01       55.0        87.6       Medium
+T06       52.0        41.4       Medium
+T03       47.8         8.4       Weak
+T08       34.1        90.9       Weak
+T05       29.2        34.5       Weak
+T02       21.8       100.0       Weak
+
+KEY FINDINGS
+==========
+
+1. TOP PERFORMERS (Contribution Score >= 60)
+   - Nandini (T07): 91.0
+   - Parth (T06): 82.0
+   - Arjun (T03): 76.7
+   - Om (T07): 74.7
+   - Dev (T03): 65.3
+   - Sneha (T02): 64.6
+   - Ishaan (T01): 63.9
+   - Meera (T01): 63.2
+   - Yash (T04): 62.9
+   - Reyansh (T05): 62.5
+   - Harsh (T06): 61.3
+
+2. STUDENTS NEEDING ATTENTION (Score < 40)
+   - Kavya (T03): 21.4
+   - Aditya (T05): 22.2
+   - Priya (T07): 23.7
+   - Manav (T03): 24.7
+   - Reyansh (T05): 28.8
+   - Kabir (T02): 29.3
+   - Nisha (T02): 31.2
+   - Ari (T08): 31.9
+   - Neha (T04): 33.1
+   - Zara (T08): 33.1
+   - Ritika (T04): 38.4
+
+3. TEAM INSIGHTS
+   - Strong Team: T07 (Nandini, Om leading; Priya struggling)
+   - Weak Teams: T02, T03, T05, T08 need intervention
+   - High balance but low performance in T02 indicates unequal workload
+   - T03 has both top and bottom performers (high variance)
+
+4. PATTERNS IDENTIFIED
+   - Unequal Contribution: T02, T03 show wide score gaps within teams
+   - Delays: Students with low week4 progress correlated with low task completion
+   - Strong Teams: T07, T04 show good overall progress
+   - Weak Teams: T02, T05, T08 need monitoring
+
+VISUALIZATIONS GENERATED
+===================
+1. contribution_scores.png - Individual student contribution bar chart
+2. team_performance.png - Team performance & balance comparison
+3. team_distribution.png - Team distribution charts
+4. progress_trends.png - Weekly progress trends (top & bottom performers)
+5. correlation_matrix.png - Feature correlations
+6. at_risk_analysis.png - Risk factor distribution
+
+RECOMMENDATIONS
+===============
+1. T02, T03, T05, T08 require immediate instructor intervention
+2. Students with <40 score should receive additional support
+3. High variance teams (T02, T03) need workload redistribution
+4. Peer review bias mitigation: Combine with objective activity data
+
+SUCCESS METRICS ACHIEVED
+=====================
+- Contribution scores calculated for all 40 students
+- Team performance scores calculated for all 8 teams
+- At-risk students identified (14 students)
+- Visual dashboard created with 6 chart types
+- Reproducible pipeline (cleaning -> analysis -> visualization)
+
+================================================================================
+                         END OF REPORT
+================================================================================
