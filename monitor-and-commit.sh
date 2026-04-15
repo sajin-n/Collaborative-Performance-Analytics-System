@@ -13,6 +13,31 @@ echo ""
 LAST_STATUS=""
 consecutive_stable=0
 
+retry_push() {
+    local max_attempts=5
+    local delay=5
+    local attempt=1
+
+    while [ $attempt -le $max_attempts ]; do
+        if git push origin main &>/dev/null; then
+            echo "🎯 Successfully pushed to GitHub"
+            return 0
+        fi
+
+        if [ $attempt -lt $max_attempts ]; then
+            echo "⚠️  Push failed (attempt $attempt/$max_attempts). Retrying in ${delay}s..."
+            sleep $delay
+            delay=$((delay * 2))
+        else
+            echo "❌ Push failed after $max_attempts attempts. Will retry on next change cycle."
+        fi
+
+        attempt=$((attempt + 1))
+    done
+
+    return 1
+}
+
 while true; do
     # Get current git status
     CURRENT_STATUS=$(git status --porcelain)
@@ -32,35 +57,42 @@ while true; do
             MODIFIED=$(git status --porcelain | grep '^ M' | awk '{print $2}' | tr '\n' ' ')
             ADDED=$(git status --porcelain | grep '^??' | awk '{print $2}' | tr '\n' ' ')
             DELETED=$(git status --porcelain | grep '^ D' | awk '{print $2}' | tr '\n' ' ')
+            DID_COMMIT=0
             
             if [ ! -z "$MODIFIED" ]; then
                 echo "📋 Modified files: $MODIFIED"
                 git add $MODIFIED 2>/dev/null
                 MODIFIED_FILES=$(echo $MODIFIED | tr ' ' ', ')
-                git commit -m "update: Modify $MODIFIED_FILES" 2>/dev/null
-                echo "✅ Committed modifications"
+                if git commit -m "update: Modify $MODIFIED_FILES" 2>/dev/null; then
+                    DID_COMMIT=1
+                    echo "✅ Committed modifications"
+                fi
             fi
             
             if [ ! -z "$ADDED" ]; then
                 echo "🆕 New files: $ADDED"
                 git add $ADDED 2>/dev/null
-                git commit -m "feat: Add new files - $ADDED" 2>/dev/null
-                echo "✅ Committed new files"
+                if git commit -m "feat: Add new files - $ADDED" 2>/dev/null; then
+                    DID_COMMIT=1
+                    echo "✅ Committed new files"
+                fi
             fi
             
             if [ ! -z "$DELETED" ]; then
                 echo "🗑️  Deleted files: $DELETED"
                 git add -A 2>/dev/null
-                git commit -m "refactor: Remove $DELETED" 2>/dev/null
-                echo "✅ Committed deletions"
+                if git commit -m "refactor: Remove $DELETED" 2>/dev/null; then
+                    DID_COMMIT=1
+                    echo "✅ Committed deletions"
+                fi
             fi
             
             # Push to GitHub
-            echo "⬆️  Pushing to GitHub..."
-            if git push origin main &>/dev/null; then
-                echo "🎯 Successfully pushed to GitHub"
+            if [ "$DID_COMMIT" -eq 1 ]; then
+                echo "⬆️  Pushing to GitHub..."
+                retry_push
             else
-                echo "⚠️  Push failed (maybe no network or permission issue)"
+                echo "ℹ️  No new commit created in this cycle."
             fi
             echo ""
         fi
